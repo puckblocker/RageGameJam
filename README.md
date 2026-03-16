@@ -1,1 +1,1 @@
-# RageGame
+# RageGameJam
