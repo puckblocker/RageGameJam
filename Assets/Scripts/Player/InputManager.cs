@@ -30,6 +30,7 @@ public class InputManager : MonoBehaviour
 
     private void LateUpdate()
     {
+        movement.lookDir(playerAct.Look.ReadValue<Vector2>());
     }
 
     private void OnEnable()
