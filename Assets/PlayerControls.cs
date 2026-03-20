@@ -120,10 +120,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Interact"",
+                    ""name"": ""SwipeDown"",
                     ""type"": ""Button"",
                     ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwipeUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""1e439a2a-a34d-46a8-b8c7-a87c09f4cd35"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
@@ -523,7 +532,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Interact"",
+                    ""action"": ""SwipeDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -534,7 +543,29 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Interact"",
+                    ""action"": ""SwipeDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a0d476d-5aa2-4e00-8bcd-f2123f7bd3c0"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwipeUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7b6de146-aa56-47a4-96a8-99987abaca11"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""SwipeUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1579,7 +1610,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player3D_Move = m_Player3D.FindAction("Move", throwIfNotFound: true);
         m_Player3D_Look = m_Player3D.FindAction("Look", throwIfNotFound: true);
         m_Player3D_Attack = m_Player3D.FindAction("Attack", throwIfNotFound: true);
-        m_Player3D_Interact = m_Player3D.FindAction("Interact", throwIfNotFound: true);
+        m_Player3D_SwipeDown = m_Player3D.FindAction("SwipeDown", throwIfNotFound: true);
+        m_Player3D_SwipeUp = m_Player3D.FindAction("SwipeUp", throwIfNotFound: true);
         m_Player3D_Crouch = m_Player3D.FindAction("Crouch", throwIfNotFound: true);
         m_Player3D_Jump = m_Player3D.FindAction("Jump", throwIfNotFound: true);
         m_Player3D_Previous = m_Player3D.FindAction("Previous", throwIfNotFound: true);
@@ -1692,7 +1724,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player3D_Move;
     private readonly InputAction m_Player3D_Look;
     private readonly InputAction m_Player3D_Attack;
-    private readonly InputAction m_Player3D_Interact;
+    private readonly InputAction m_Player3D_SwipeDown;
+    private readonly InputAction m_Player3D_SwipeUp;
     private readonly InputAction m_Player3D_Crouch;
     private readonly InputAction m_Player3D_Jump;
     private readonly InputAction m_Player3D_Previous;
@@ -1722,9 +1755,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Attack => m_Wrapper.m_Player3D_Attack;
         /// <summary>
-        /// Provides access to the underlying input action "Player3D/Interact".
+        /// Provides access to the underlying input action "Player3D/SwipeDown".
         /// </summary>
-        public InputAction @Interact => m_Wrapper.m_Player3D_Interact;
+        public InputAction @SwipeDown => m_Wrapper.m_Player3D_SwipeDown;
+        /// <summary>
+        /// Provides access to the underlying input action "Player3D/SwipeUp".
+        /// </summary>
+        public InputAction @SwipeUp => m_Wrapper.m_Player3D_SwipeUp;
         /// <summary>
         /// Provides access to the underlying input action "Player3D/Crouch".
         /// </summary>
@@ -1780,9 +1817,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
-            @Interact.started += instance.OnInteract;
-            @Interact.performed += instance.OnInteract;
-            @Interact.canceled += instance.OnInteract;
+            @SwipeDown.started += instance.OnSwipeDown;
+            @SwipeDown.performed += instance.OnSwipeDown;
+            @SwipeDown.canceled += instance.OnSwipeDown;
+            @SwipeUp.started += instance.OnSwipeUp;
+            @SwipeUp.performed += instance.OnSwipeUp;
+            @SwipeUp.canceled += instance.OnSwipeUp;
             @Crouch.started += instance.OnCrouch;
             @Crouch.performed += instance.OnCrouch;
             @Crouch.canceled += instance.OnCrouch;
@@ -1818,9 +1858,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
-            @Interact.started -= instance.OnInteract;
-            @Interact.performed -= instance.OnInteract;
-            @Interact.canceled -= instance.OnInteract;
+            @SwipeDown.started -= instance.OnSwipeDown;
+            @SwipeDown.performed -= instance.OnSwipeDown;
+            @SwipeDown.canceled -= instance.OnSwipeDown;
+            @SwipeUp.started -= instance.OnSwipeUp;
+            @SwipeUp.performed -= instance.OnSwipeUp;
+            @SwipeUp.canceled -= instance.OnSwipeUp;
             @Crouch.started -= instance.OnCrouch;
             @Crouch.performed -= instance.OnCrouch;
             @Crouch.canceled -= instance.OnCrouch;
@@ -2331,12 +2374,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAttack(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "SwipeDown" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnInteract(InputAction.CallbackContext context);
+        void OnSwipeDown(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SwipeUp" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwipeUp(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Crouch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

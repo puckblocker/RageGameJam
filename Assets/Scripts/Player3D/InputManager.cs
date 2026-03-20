@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class InputManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class InputManager : MonoBehaviour
     private PlayerControls.Player3DActions playerAct;
     // Scripts
     private PlayerMovement movement;
+    [SerializeField] private VideoScroller videoScroller;
+    [SerializeField] private ImageMover imageMover;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -19,7 +22,6 @@ public class InputManager : MonoBehaviour
         // Initialize Inputs
         controls = new PlayerControls();  
         playerAct = controls.Player3D;
-
     }
 
     // Update is called once per frame
@@ -41,5 +43,20 @@ public class InputManager : MonoBehaviour
     private void OnDisable()
     {
         controls.Disable(); 
+    }
+
+    void Update()
+    {
+        if(playerAct.SwipeDown.WasPressedThisFrame())
+        {
+            //videoScroller.switchVideo();
+            imageMover.SwipeDown();
+        }
+
+        if (playerAct.SwipeUp.WasPressedThisFrame())
+        {
+            //videoScroller.switchVideo();
+            imageMover.SwipeUp();
+        }
     }
 }

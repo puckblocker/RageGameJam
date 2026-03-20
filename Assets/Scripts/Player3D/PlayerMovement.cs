@@ -1,14 +1,17 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Video;
+
+
 
 // Automatically Grab Components
 [RequireComponent(typeof(Rigidbody), typeof(PlayerBase))]
 public class PlayerMovement : MonoBehaviour
 {
     // Variables
-    InputAction moveAction;
     private float spd = 5.0f;
+
     // Component Variables
     private Rigidbody rb;
     private PlayerBase player;
@@ -28,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
         // Grab Components
         rb = GetComponent<Rigidbody>();
         player = GetComponent<PlayerBase>();
+
         // Lock Cursor
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -48,10 +52,16 @@ public class PlayerMovement : MonoBehaviour
 
         // Vertical Movement
         xRot -= mouse.y;    // 
-        xRot = Mathf.Clamp(xRot, -80f, 80f);    // locks player view distance rotation
+        xRot = Mathf.Clamp(xRot, -80f, 70f);    // locks player view distance rotation
         cam.transform.localRotation = Quaternion.Euler(xRot, 0f, 0f); // quaternion euler allows for rotation and rotation only for left and right
 
         // Rotate Player With Camera
         playerBdy.Rotate(Vector3.up * mouse.x);
     }
+
+    //public void processInteract()
+    //{
+    //    Debug.Log("Interact");
+    //    videoScroller.switchVideo();
+    //}
 }
