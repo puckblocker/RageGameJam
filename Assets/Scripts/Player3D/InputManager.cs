@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour
     private PlayerMovement movement;
     [SerializeField] private VideoScroller videoScroller;
     [SerializeField] private ImageMover imageMover;
+    private PhoneBase phoneBase;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -22,6 +23,7 @@ public class InputManager : MonoBehaviour
         // Initialize Inputs
         controls = new PlayerControls();  
         playerAct = controls.Player3D;
+        playerAct.Throw.performed += ctx => phoneBase.ThrowPhone();
     }
 
     // Update is called once per frame

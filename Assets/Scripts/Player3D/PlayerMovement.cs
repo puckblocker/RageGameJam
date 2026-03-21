@@ -52,11 +52,11 @@ public class PlayerMovement : MonoBehaviour
 
         // Vertical Movement
         xRot -= mouse.y;    // 
-        xRot = Mathf.Clamp(xRot, -80f, 70f);    // locks player view distance rotation
+        xRot = Mathf.Clamp(xRot, -100f, 55f);    // locks player view distance rotation
         cam.transform.localRotation = Quaternion.Euler(xRot, 0f, 0f); // quaternion euler allows for rotation and rotation only for left and right
 
         // Rotate Player With Camera
-        playerBdy.Rotate(Vector3.up * mouse.x);
+        playerBdy.Rotate(Vector3.up * mouse.x, Space.World);
     }
 
     //public void processInteract()
