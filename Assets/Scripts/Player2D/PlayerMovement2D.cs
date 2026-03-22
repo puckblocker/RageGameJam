@@ -20,9 +20,13 @@ public class PlayerMovement2D : MonoBehaviour
     [SerializeField] private StatsUI2D UI;
     [SerializeField] private GameObject gameOver;
 
+    // Sound
+    AudioManager audioManager;
+
     private void Awake()
     {
         // Grab Components
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         rb = GetComponent<Rigidbody2D>();
         player = GetComponent<PlayerBase>();
 
@@ -41,6 +45,7 @@ public class PlayerMovement2D : MonoBehaviour
         if (collision.gameObject.CompareTag("bullet") && canDmg == true)
         {
             // Destroy Colliding Object And Lower Health
+            audioManager.PlayerSFX(audioManager.hit);
             Destroy(collision.gameObject);
             PlayerBase.healthVal--;
             UI.healthBar();
@@ -73,6 +78,9 @@ public class PlayerMovement2D : MonoBehaviour
 
     public void onDeath()
     {
+        audioManager.PlayerSFX(audioManager.death);
+        audioManager.StopMusic();
+        audioManager.PlayerSFX(audioManager.gameOver);
         player.rageCnt++;
         gameOver.SetActive(true);
         Destroy(playerObj);

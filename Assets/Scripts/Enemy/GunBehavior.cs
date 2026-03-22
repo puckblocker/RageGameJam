@@ -3,39 +3,63 @@ using UnityEngine;
 
 public class GunBehavior : MonoBehaviour
 {
+    [Header("Timers")]
     public int fireInterval;
+    public int bulletCooldown;
+    private int rerollTime = 3;
+
     public int bulletCount = 3;
-    [SerializeField] private float offsetVal = 5f;
     [SerializeField] private Rigidbody2D bulletRb;
-    [SerializeField] private float bulletSpd = 5f;
+    [SerializeField] private float burstSpd = 5f;
 
     // Prefabs
-    [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform centerPoint;
+
+    // Sound
+    AudioManager audioManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(fireBullet(fireInterval, laserPrefab));
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        StartCoroutine(fireBullet(fireInterval, bulletPrefab));
     }
 
     private IEnumerator fireBullet(int interval, GameObject bullet)
     {
         while (true)
         {
-            // Interval Pause
-            yield return new WaitForSeconds(interval);
+            // Time To Reroll
+            yield return new WaitForSeconds(rerollTime);
 
-            // Spawn Bullets
-            for (int i = 0; i < bulletCount; i++)
+            // Generate Random Number For Spawn Chance
+            int spawnChance = Random.Range(0, 5);
+
+            if (spawnChance == 0 || spawnChance == 1)
             {
-                Vector3 offset = transform.right * offsetVal;
-                Vector3 spawnLoc = transform.position + offset;
-                GameObject newBullet = Instantiate(bullet, spawnLoc, Quaternion.identity);
-                bulletRb = newBullet.GetComponent<Rigidbody2D>();
-                bulletRb.linearVelocity = transform.right * bulletSpd;
+                // Interval Pause
+                yield return new WaitForSeconds(interval);
 
-                yield return new WaitForSeconds(2f);
-                Destroy(newBullet);
+                // Spawn Bullets
+                for (int i = 0; i < bulletCount; i++)
+                {
+                    // Spawn Bullet Object
+                    audioManager.PlayerSFX(audioManager.bullet);
+                    GameObject newBullet = Instantiate(bullet, centerPoint.position, centerPoint.rotation);
+
+                    // Launch Bullet
+                    bulletRb = newBullet.GetComponent<Rigidbody2D>();
+                    bulletRb.linearVelocity = transform.right * burstSpd;
+
+                    // Delete Bullet
+                    Destroy(newBullet, 2f);
+
+                    yield return new WaitForSeconds(burstSpd);
+                }
+
+                // Enter Cooldown Phase For Bullet
+                yield return new WaitForSeconds(bulletCooldown);
             }
         }
     }

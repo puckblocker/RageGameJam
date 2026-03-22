@@ -3,15 +3,22 @@ using UnityEngine;
 
 public class LaserBehavior : MonoBehaviour
 {
+    [Header("Timers")]
     public int fireInterval;
-    [SerializeField] private float offsetVal = 5f;
+    public int laserCooldown;
+    private int rerollTime = 5;
 
     // Prefabs
     [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private Transform centerPoint;
+
+    // Sound
+    AudioManager audioManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         StartCoroutine(fireLaser(fireInterval, laserPrefab));
     }
 
@@ -19,16 +26,25 @@ public class LaserBehavior : MonoBehaviour
     {
         while (true)
         {
-            // Interval Pause
-            yield return new WaitForSeconds(interval);
+            yield return new WaitForSeconds(rerollTime);
 
-            // Spawn Laser Beam
-            Vector3 offset = transform.right * offsetVal;
-            Vector3 spawnLoc = transform.position + offset;
-            GameObject newLaser = Instantiate(laser, spawnLoc, Quaternion.identity);
+            // Generate Random Number For Fire Chance
+            int spawnChance = Random.Range(0, 5);
+            if (spawnChance == 0)
+            {
+                // Interval Pause
+                yield return new WaitForSeconds(interval);
 
-            yield return new WaitForSeconds(interval);
-            Destroy(newLaser);
+                // Spawn Laser Beam
+                audioManager.PlayerSFX(audioManager.laser);
+                GameObject newLaser = Instantiate(laser, centerPoint.position, centerPoint.rotation);
+
+                yield return new WaitForSeconds(interval);
+                Destroy(newLaser);
+
+                // Enter Cooldown Phase For Laser
+                yield return new WaitForSeconds(laserCooldown);
+            }
         }
     }
 }
