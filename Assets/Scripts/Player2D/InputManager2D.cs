@@ -8,6 +8,7 @@ public class InputManager2D : MonoBehaviour
     // Input System
     private PlayerControls controls;
     private PlayerControls.Player2DActions playerAct;
+    [SerializeField] private Menu2D menu2D;
     // Scripts
     private PlayerMovement2D movement;
 
@@ -20,7 +21,8 @@ public class InputManager2D : MonoBehaviour
         // Initialize Inputs
         controls = new PlayerControls();
         playerAct = controls.Player2D;
-
+        playerAct.Pause.performed += ctx => 
+        menu2D.PauseGame();
     }
 
     // Update is called once per frame
