@@ -11,7 +11,7 @@ public class PlayerMovement2D : MonoBehaviour
     // Variables
     InputAction moveAction;
     private bool canDmg = true;
-    [SerializeField] private float invFrame = 0.5f;
+    [SerializeField] private float invFrame = 1f;
 
     // Component Variables
     [SerializeField] private Rigidbody2D rb;
@@ -47,11 +47,11 @@ public class PlayerMovement2D : MonoBehaviour
             // Destroy Colliding Object And Lower Health
             audioManager.PlayerSFX(audioManager.hit);
             Destroy(collision.gameObject);
-            PlayerBase.healthVal--;
-            UI.healthBar();
+            player.health--;
+            UI.healthBar(player.health);
 
             // Queue Death When No Life
-            if (PlayerBase.healthVal <= 0)
+            if (player.health <= 0)
                 onDeath();
             // Queue Invincible Frames
             else
@@ -63,11 +63,11 @@ public class PlayerMovement2D : MonoBehaviour
         else if (collision.gameObject.CompareTag("laser") && canDmg == true)
         {
             // Lower Health
-            PlayerBase.healthVal--;
-            UI.healthBar();
+            player.health--;
+            UI.healthBar(player.health);
 
             // Queue Death When No Life
-            if (PlayerBase.healthVal <= 0)
+            if (player.health <= 0)
                 onDeath();
             // Queue Invincible Frames
             else
@@ -81,13 +81,15 @@ public class PlayerMovement2D : MonoBehaviour
         audioManager.PlayerSFX(audioManager.death);
         audioManager.StopMusic();
         audioManager.PlayerSFX(audioManager.gameOver);
-        player.rageCnt++;
+        PlayerBase.rageCnt++;
         gameOver.SetActive(true);
         Destroy(playerObj);
     }
 
     private IEnumerator Invincible(float invFrame)
     {
+        canDmg = false;
         yield return new WaitForSeconds(invFrame);
+        canDmg = true;
     }
 }

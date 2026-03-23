@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -12,6 +13,7 @@ public class InputManager : MonoBehaviour
     private PlayerMovement movement;
     [SerializeField] private VideoScroller videoScroller;
     [SerializeField] private ImageMover imageMover;
+    [SerializeField] private GameOver gameOver;
     private PhoneBase phoneBase;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,13 +25,14 @@ public class InputManager : MonoBehaviour
         // Initialize Inputs
         controls = new PlayerControls();  
         playerAct = controls.Player3D;
-        playerAct.Throw.performed += ctx => phoneBase.ThrowPhone();
+        //playerAct.Throw.performed += ctx => phoneBase.ThrowPhone();
+        playerAct.Pause.performed += ctx => gameOver.PauseGame();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        movement.move(playerAct.Move.ReadValue<Vector2>());
+        //movement.move(playerAct.Move.ReadValue<Vector2>());
     }
 
     private void LateUpdate()

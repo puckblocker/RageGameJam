@@ -9,11 +9,11 @@ public class StatsUI2D : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreUI;
     private int heartCnt;
     private float scoreTimer = 0f;
-    
+
     // Hide Health
-    public void healthBar()
+    public void healthBar(int health)
     {
-        heartCnt = PlayerBase.healthVal;
+        heartCnt = health;
         switch(heartCnt)
         {
             case 0:

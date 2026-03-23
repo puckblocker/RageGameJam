@@ -10,6 +10,7 @@ public class LaserBehavior : MonoBehaviour
 
     // Prefabs
     [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private GameObject laserWarnPrefab;
     [SerializeField] private Transform centerPoint;
 
     // Sound
@@ -36,6 +37,9 @@ public class LaserBehavior : MonoBehaviour
                 yield return new WaitForSeconds(interval);
 
                 // Spawn Laser Beam
+                GameObject newLaserWarn = Instantiate(laserWarnPrefab, centerPoint.position, centerPoint.rotation);
+                yield return new WaitForSeconds(1);
+                Destroy(newLaserWarn);
                 audioManager.PlayerSFX(audioManager.laser);
                 GameObject newLaser = Instantiate(laser, centerPoint.position, centerPoint.rotation);
 

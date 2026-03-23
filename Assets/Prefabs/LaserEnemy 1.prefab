@@ -229,6 +229,7 @@ MonoBehaviour:
   fireInterval: 2
   laserCooldown: 5
   laserPrefab: {fileID: 1016769153463923293, guid: 385f55e90af0a8349b812a907f380401, type: 3}
+  laserWarnPrefab: {fileID: 5869362895840436100, guid: 9065406457d2fd440886500b1891fd90, type: 3}
   centerPoint: {fileID: 3253118158048628723}
 --- !u!4 &8041212816346090671 stripped
 Transform:

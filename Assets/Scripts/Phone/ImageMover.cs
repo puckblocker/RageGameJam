@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Video;
 
 public class ImageMover : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class ImageMover : MonoBehaviour
 
     [Header("Screens")]
     [SerializeField] private RectTransform[] screens = new RectTransform[3];
+    [SerializeField] private VideoPlayer[] videoPlayers = new VideoPlayer[3];
 
     [Header("Swiping Settings")]
     [SerializeField] private float screenHeight = 0f;
@@ -104,6 +106,8 @@ public class ImageMover : MonoBehaviour
         screens[1].anchoredPosition = new Vector2(0f, screenHeight);     // middle screen
         screens[2].anchoredPosition = new Vector2(0f, -screenHeight);  // last screen
 
+
+        PlayVideo();
         //InitializeOffsetPositions();
     }
 
@@ -279,6 +283,23 @@ public class ImageMover : MonoBehaviour
         incomeScreen.anchoredPosition = incomeTrgt;
 
         isAnim = false;
+
+        PlayVideo();
+    }
+
+    private void PlayVideo()
+    {
+        for(int i = 0; i < videoPlayers.Length; i++)
+        {
+            if(i == crntIndex)
+            {
+                videoPlayers[i].Play();
+            }
+            else
+            {
+                videoPlayers[i].Pause();
+            }
+        }
     }
 
     //private IEnumerator AnimateWindow(bool open)

@@ -1,11 +1,20 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Menu2D : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private Animator sceneAnim;
     public void QuitGameOver()
     {
+        StartCoroutine(FadeCooldown());
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+    }
+
+    public void StartGame()
+    {
+        StartCoroutine(FadeCooldown());
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     
@@ -25,5 +34,11 @@ public class Menu2D : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
+    }
+
+    private IEnumerator FadeCooldown()
+    {
+        sceneAnim.Play("Crossfade_End");
+        yield return new WaitForSeconds(2);
     }
 }
